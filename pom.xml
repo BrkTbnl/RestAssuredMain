@@ -12,7 +12,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <argLine>-user.language=en</argLine>
+        <argLine>-Duser.language=en</argLine>
     </properties>
 
     <dependencies>
@@ -27,6 +27,17 @@
             <artifactId>testng</artifactId>
             <version>7.7.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.32</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
+
+
 
 </project>

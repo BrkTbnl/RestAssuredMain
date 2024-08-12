@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.*;
 public class _01_ApiTestIntro {
 
     @Test
-    public void Test1() {
+    public void Test01() {
 
         given()
                 // Preparatory procedures codes
@@ -22,7 +22,7 @@ public class _01_ApiTestIntro {
     }
 
     @Test
-    public void t2StatusCode(){
+    public void t02StatusCode(){
 
         given()
                 // Preparation section is empty
@@ -36,7 +36,7 @@ public class _01_ApiTestIntro {
     }
 
     @Test
-    public void t3ContentType(){
+    public void t03ContentType(){
 
         given()
                 .when()
@@ -50,7 +50,7 @@ public class _01_ApiTestIntro {
     }
 
     @Test
-    public void t4CheckCountryInResponseBody(){
+    public void t04CheckCountryInResponseBody(){
 
         given()
                 .when()
@@ -67,7 +67,7 @@ public class _01_ApiTestIntro {
     }
 
     @Test
-    public void t5StateInResponseBody(){
+    public void t05StateInResponseBody(){
 
         given()
                 .when()
@@ -88,7 +88,7 @@ public class _01_ApiTestIntro {
          */
 
     @Test
-    public void t6CheckHasItem(){
+    public void t06CheckHasItem(){
 
         given()
                 .when()
@@ -105,7 +105,7 @@ public class _01_ApiTestIntro {
             */
 
     @Test
-    public void t7CheckHasSize(){
+    public void t07CheckHasSize(){
 
         given()
 
@@ -125,7 +125,7 @@ public class _01_ApiTestIntro {
             */
 
     @Test
-    public void t8ArrayHasSize(){
+    public void t08ArrayHasSize(){
 
         given()
                 .when()
@@ -140,7 +140,7 @@ public class _01_ApiTestIntro {
     }
 
     @Test
-    public void t9Combining(){
+    public void t09Combining(){
 
         given()
                 .when()
@@ -152,6 +152,43 @@ public class _01_ApiTestIntro {
                 .body("places",hasSize(1))
                 .body("places[0].state", equalTo("California"))
                 .body("places[0].'place name'", equalTo("Beverly Hills"))
+        ;
+    }
+
+    @Test
+    public void t10PathParam(){
+
+        given()
+                .pathParam("country","us")
+                .pathParam("Code",90210)
+                .log().uri() //shows completed API after using parameters
+
+                .when()
+                .get("http://api.zippopotam.us/{country}/{Code}")
+
+                .then()
+                .log().body()
+                ;
+    }
+
+    @Test
+    public void t11QueryParam() {
+
+        // https://gorest.co.in/public/v1/users?page=1
+
+        given()
+                .param("page", 1) // It is added to the link as ?page=1
+                // It can also be used with queryParam
+                //.queryParam("page", 1)
+                .log().uri()
+
+                .when()
+                .get("https://gorest.co.in/public/v1/users") // ?page=1
+                // .get("https://gorest.co.in/public/v1/users?page=1")
+
+                .then()
+                .statusCode(200)
+                .log().body()
         ;
     }
 }

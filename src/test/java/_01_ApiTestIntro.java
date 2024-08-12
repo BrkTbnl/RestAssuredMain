@@ -100,9 +100,7 @@ public class _01_ApiTestIntro {
                 .statusCode(200)
                 .body("places.'place name'", hasItem("Dörtağaç Köyü"))
         ;
-    }
-
-    /* Question: Returning from "http://api.zippopotam.us/us/90210" (endpoint)
+    }    /* Question: Returning from "http://api.zippopotam.us/us/90210" (endpoint)
             * Verify that the string length of the place array is 1.
             */
 
@@ -115,10 +113,45 @@ public class _01_ApiTestIntro {
                 .get("http://api.zippopotam.us/us/90210")
 
                 .then()
-                .log().body()
+                .log().all()
                 .contentType(ContentType.JSON)
                 .statusCode(200)
                 .body("places", hasSize(1))
+        ;
+    }
+
+            /* Question: Returning from "http://api.zippopotam.us/us/90210" (endpoint)
+            * Verify that the string length of the place array is 1.
+            */
+
+    @Test
+    public void t8ArrayHasSize(){
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+
+                .then()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .statusCode(200)
+                .body("places.size()", equalTo(1))
+        ;
+    }
+
+    @Test
+    public void t9Combining(){
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+
+                .then()
+                .log().body()
+                .statusCode(200)
+                .body("places",hasSize(1))
+                .body("places[0].state", equalTo("California"))
+                .body("places[0].'place name'", equalTo("Beverly Hills"))
         ;
     }
 }

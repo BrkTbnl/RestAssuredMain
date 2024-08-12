@@ -1,4 +1,3 @@
-import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -42,11 +41,53 @@ public class _03_ApiTestExtract {
 
                         .then()
                         .log().body()
-                        .extract().path("places[0].state")
-                ;
+                        .extract().path("places[0].state");
 
         System.out.println("State: " + stateName);
         Assert.assertEquals(stateName, "California");
+
+    }
+
+    /* Question: The first element of the place array returned from the endpoint
+     * "http://api.zippopotam.us/us/90210"
+     * verify that the place name value is "Beverly Hills" with testNG Assertion
+     */
+
+    @Test
+    public void t03extractingJSONPath3() {
+
+        String placeName =
+                given()
+
+                        .when()
+                        .get("http://api.zippopotam.us/us/90210")
+                        .then()
+                        .log().body()
+                        .extract().path("places[0].'place name'");
+        System.out.println("placeName = " + placeName);
+        Assert.assertEquals(placeName, "Beverly Hills");
+    }
+
+    /* Question: Verify with testNG that the limit information returned from the
+     * "https://gorest.co.in/public/v1/users" endpoint is 10.
+     */
+
+    @Test
+    public void t04extractingJSONPath4() {
+
+
+        int limit =
+                given()
+
+                        .when()
+                        .get("https://gorest.co.in/public/v1/users")
+
+                        .then()
+                        .log().body()
+                        .extract().path("meta.pagination.limit");
+
+        System.out.println("limit = " + limit);
+        Assert.assertEquals(limit, 10, "limit is not 10!");
 
     }
 }

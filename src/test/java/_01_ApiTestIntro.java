@@ -1,4 +1,11 @@
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.internal.RequestSpecificationImpl;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.*;
@@ -190,5 +197,67 @@ public class _01_ApiTestIntro {
                 .statusCode(200)
                 .log().body()
         ;
+    }
+
+    /*
+    https://gorest.co.in/public/v1/users?page=3
+    When you call pages 1 to 10 from the link, the returned page values in the response
+    Check whether it is the same as the called page number.
+    */
+
+    @Test
+    public void t12QueryParam2() {
+        for (int i = 1; i <=10 ; i++) {
+
+            given()
+                    .param("page", i)
+                    .log().uri()
+
+                    .when()
+                    .get("https://gorest.co.in/public/v1/users")
+
+                    .then()
+                    .statusCode(200)
+                    .log().body()
+                    .body("meta.pagination.page", equalTo(i))
+
+            ;
+        }
+    }
+
+    RequestSpecification requestSpec;
+    ResponseSpecification responseSpec;
+
+
+    @BeforeTest
+    public void setup(){
+
+        baseURI = "https://gorest.co.in/public/v1";
+
+        requestSpec = new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .log(LogDetail.URI) //log().uri()
+                .build()
+                ;
+
+        responseSpec = new ResponseSpecBuilder()
+                .expectStatusCode(200) //status code check
+                .log(LogDetail.BODY) // .log().body()
+                .build()
+                ;
+    }
+
+    @Test
+    public void t13BaseUriWithParameters(){
+        given()
+                .param("page", 1)
+                .spec(requestSpec)
+
+                .when()
+                .get("/users")
+
+                .then()
+                .spec(responseSpec)
+                ;
     }
 }

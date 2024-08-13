@@ -1,6 +1,8 @@
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.*;
 
 public class _03_ApiTestExtract {
@@ -90,4 +92,21 @@ public class _03_ApiTestExtract {
         Assert.assertEquals(limit, 10, "limit is not 10!");
 
     }
+
+    @Test
+    public void extractingJSONPath5() {
+
+        List<Integer> IDs =
+                given()
+                        .when()
+                        .get("https://gorest.co.in/public/v1/users")
+
+                        .then()
+                        .log().body()
+                        .extract().path("data.id");
+
+
+        System.out.println("IDs = " + IDs);
+    }
+
 }

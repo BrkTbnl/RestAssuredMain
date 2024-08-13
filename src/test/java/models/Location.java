@@ -47,7 +47,12 @@ public class Location {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Location{" +
+                "postcode='" + postcode + '\'' +
+                ", country='" + country + '\'' +
+                ", countryAbbreviation='" + countryAbbreviation + '\'' +
+                ", places=" + places +
+                '}';
     }
 
 }

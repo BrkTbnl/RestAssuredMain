@@ -51,4 +51,15 @@ public class Place {
         this.latitude = latitude;
     }
 
+    @Override
+    public String toString() {
+        return "Place{" +
+                "placeName='" + placeName + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", state='" + state + '\'' +
+                ", stateAbbreviation='" + stateAbbreviation + '\'' +
+                ", latitude='" + latitude + '\'' +
+                '}';
+    }
+
 }

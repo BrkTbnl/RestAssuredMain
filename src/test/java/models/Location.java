@@ -1,5 +1,7 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class Location {
@@ -12,6 +14,8 @@ public class Location {
         return postcode;
     }
 
+    //you need to add it for matching
+    @JsonProperty("post code")
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
@@ -27,7 +31,7 @@ public class Location {
     public String getCountryAbbreviation() {
         return countryAbbreviation;
     }
-
+    @JsonProperty("country abbreviation")
     public void setCountryAbbreviation(String countryAbbreviation) {
         this.countryAbbreviation = countryAbbreviation;
     }

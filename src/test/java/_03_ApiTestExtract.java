@@ -1,3 +1,4 @@
+import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -94,7 +95,7 @@ public class _03_ApiTestExtract {
     }
 
     @Test
-    public void extractingJSONPath5() {
+    public void t5extractingJSONPath() {
 
         List<Integer> IDs =
                 given()
@@ -109,4 +110,47 @@ public class _03_ApiTestExtract {
         System.out.println("IDs = " + IDs);
     }
 
+    //print all the names returned at the end of the same endpoint.
+
+    @Test
+    public void t6extractingJSONPath() {
+
+        List<String> fullNameList =
+                given()
+                        .when()
+                        .get("https://gorest.co.in/public/v1/users")
+
+                        .then()
+                        .log().body()
+                        .extract().path("data.name");
+
+        System.out.println("fullNameList = " + fullNameList);
+    }
+
+    @Test
+    public void extractingJSONPathResponseAll() {
+
+        Response incomingData =
+
+                given()
+
+                        .when()
+                        .get("https://gorest.co.in/public/v1/users")
+
+                        .then()
+                        .log().body()
+                        .extract().response();
+
+        List<Integer> IDs = incomingData.path("data.id");
+        List<String> names = incomingData.path("data.name");
+        int limit = incomingData.path("meta.pagination.limit");
+
+        System.out.println("IDs = " + IDs);
+        System.out.println("names = " + names);
+        System.out.println("limit = " + limit);
+
+        Assert.assertTrue(names.contains("Achalesvara Talwar"));
+        Assert.assertTrue(IDs.contains(7336665));
+        Assert.assertEquals(limit, 10);
+    }
 }

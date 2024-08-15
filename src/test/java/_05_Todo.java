@@ -102,7 +102,7 @@ public class _05_Todo {
             ;
 
 
-        System.out.println(todoObj.toString());
+        System.out.println(todoObj);
 
     }
 

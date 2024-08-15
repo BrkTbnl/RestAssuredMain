@@ -1,6 +1,5 @@
 import models.Location;
 import models.Place;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import static io.restassured.RestAssured.*;
 

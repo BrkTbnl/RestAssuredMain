@@ -1,10 +1,11 @@
 package models;
 
 public class User {
-    private int id;
-    private String name;
-    private String email;
-    private String gender;
+    public int id;
+    public String name;
+    public String email;
+    public String gender;
+    public String status;
 
     public int getId() {
         return id;
@@ -46,7 +47,6 @@ public class User {
         this.status = status;
     }
 
-    private String status;
 
     @Override
     public String toString() {

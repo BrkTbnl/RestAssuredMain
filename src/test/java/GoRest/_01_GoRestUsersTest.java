@@ -2,6 +2,7 @@ package GoRest;
 
 import com.github.javafaker.Faker;
 import io.restassured.http.ContentType;
+import models.User;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -73,6 +74,38 @@ public class _01_GoRestUsersTest {
 
         System.out.println("userId = " + userId);
     }
+
+    @Test
+    public void createUserClass() {
+
+        String fullName = randomFaker.name().fullName();
+        String email = randomFaker.internet().emailAddress();
+
+        User newUser = new User();
+        newUser.name =fullName;
+        newUser.gender ="male";
+        newUser.email = email;
+        newUser.status ="active";
+
+
+        userId =
+                given() // body, token, contentType
+                        .header("Authorization", "Bearer 6e2a70107d231adae49cbeb2d30685ac536fef76a7401004e39ac3f5a3b2088a")
+                        .body(newUser)
+                        .contentType(ContentType.JSON)
+
+                        .when()
+                        .post("https://gorest.co.in/public/v2/users")
+
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .extract().path("id");
+
+        System.out.println("userId = " + userId);
+    }
+
+
 
 
 }

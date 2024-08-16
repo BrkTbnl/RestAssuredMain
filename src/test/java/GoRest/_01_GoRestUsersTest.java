@@ -20,8 +20,8 @@ public class _01_GoRestUsersTest {
     RequestSpecification reqSpec;
 
     @BeforeClass
-    public void setup(){
-        baseURI= "https://gorest.co.in/public/v2/users";
+    public void setup() {
+        baseURI = "https://gorest.co.in/public/v2/users";
 
         reqSpec = new RequestSpecBuilder()
 
@@ -40,18 +40,18 @@ public class _01_GoRestUsersTest {
         String email = randomFaker.internet().emailAddress();
 
         userId =
-        given() // body, token, contentType
-                .header("Authorization", "Bearer 6e2a70107d231adae49cbeb2d30685ac536fef76a7401004e39ac3f5a3b2088a")
-                .body("{\"name\":\""+fullName+"\", \"gender\":\"male\", \"email\":\""+email+"\",  \"status\":\"active\"}")
-                .contentType(ContentType.JSON)
+                given() // body, token, contentType
+                        .header("Authorization", "Bearer 6e2a70107d231adae49cbeb2d30685ac536fef76a7401004e39ac3f5a3b2088a")
+                        .body("{\"name\":\"" + fullName + "\", \"gender\":\"male\", \"email\":\"" + email + "\",  \"status\":\"active\"}")
+                        .contentType(ContentType.JSON)
 
-                .when()
-                .post("https://gorest.co.in/public/v2/users")
+                        .when()
+                        .post("https://gorest.co.in/public/v2/users")
 
-                .then()
-                .log().body()
-                .statusCode(201)
-                .extract().path("id");
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .extract().path("id");
 
         System.out.println("userId = " + userId);
     }
@@ -91,10 +91,10 @@ public class _01_GoRestUsersTest {
         String email = randomFaker.internet().emailAddress();
 
         User newUser = new User();
-        newUser.name =fullName;
-        newUser.gender ="male";
+        newUser.name = fullName;
+        newUser.gender = "male";
         newUser.email = email;
-        newUser.status ="active";
+        newUser.status = "active";
 
 
         userId =
@@ -115,18 +115,18 @@ public class _01_GoRestUsersTest {
     }
 
     @Test(dependsOnMethods = "createUserMap")
-    public void getUserById(){
+    public void getUserById() {
 
         given()
                 .spec(reqSpec)
                 .when()
-                .get("/"+userId)
+                .get("/" + userId)
 
                 .then()
                 .log().body()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("id",equalTo(userId))
+                .body("id", equalTo(userId))
 
         ;
     }
@@ -134,25 +134,54 @@ public class _01_GoRestUsersTest {
     @Test(dependsOnMethods = "getUserById")
     public void updateUser() {
         Map<String, String> updateUser = new HashMap<>();
-        updateUser.put("name","bt");
+        updateUser.put("name", "bt");
 
         given()
                 .spec(reqSpec)
                 .body(updateUser)
 
                 .when()
-                .put("/"+userId)
+                .put("/" + userId)
 
                 .then()
                 .log().body()
                 .statusCode(200)
-                .body("id",equalTo(userId))
-                .body("name",equalTo("bt"))
+                .body("id", equalTo(userId))
+                .body("name", equalTo("bt"))
         ;
 
     }
 
+    @Test(dependsOnMethods = "updateUser")
+    public void deleteUser() {
 
+        given()
+                .spec(reqSpec)
+
+                .when()
+                .delete("/"+userId)
+
+                .then()
+                .log().all()
+                .statusCode(204)
+        ;
+    }
+
+    // Perform the user delete negative API test
+    @Test(dependsOnMethods = "deleteUser")
+    public void deleteUserNegative() {
+
+        given()
+                .spec(reqSpec)
+
+                .when()
+                .delete("" + userId)
+
+                .then()
+                //.log().all()
+                .statusCode(404)
+        ;
+    }
 
 
 }

@@ -123,11 +123,33 @@ public class _01_GoRestUsersTest {
                 .get("/"+userId)
 
                 .then()
+                .log().body()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .body("id",equalTo(userId))
 
         ;
+    }
+
+    @Test(dependsOnMethods = "getUserById")
+    public void updateUser() {
+        Map<String, String> updateUser = new HashMap<>();
+        updateUser.put("name","bt");
+
+        given()
+                .spec(reqSpec)
+                .body(updateUser)
+
+                .when()
+                .put("/"+userId)
+
+                .then()
+                .log().body()
+                .statusCode(200)
+                .body("id",equalTo(userId))
+                .body("name",equalTo("bt"))
+        ;
+
     }
 
 

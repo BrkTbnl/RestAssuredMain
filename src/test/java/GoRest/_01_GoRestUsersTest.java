@@ -1,25 +1,34 @@
 package GoRest;
 
 import com.github.javafaker.Faker;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
 import models.User;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class _01_GoRestUsersTest {
-    /*
-    https://gorest.co.in/public/v2/users
 
-    {"name":"{{$randomFullName}}",
-    "gender":"male",
-    "email":"{{$randomEmail}}",
-    "status":"active"}
-    */
+    RequestSpecification reqSpec;
+
+    @BeforeClass
+    public void setup(){
+        baseURI= "https://gorest.co.in/public/v2/users";
+
+        reqSpec = new RequestSpecBuilder()
+
+                .addHeader("Authorization", "Bearer 6e2a70107d231adae49cbeb2d30685ac536fef76a7401004e39ac3f5a3b2088a")
+                .setContentType(ContentType.JSON)
+                .build();
+    }
 
     Faker randomFaker = new Faker();
     int userId = 0;
@@ -61,12 +70,11 @@ public class _01_GoRestUsersTest {
 
         userId =
                 given() // body, token, contentType
-                        .header("Authorization", "Bearer 6e2a70107d231adae49cbeb2d30685ac536fef76a7401004e39ac3f5a3b2088a")
+                        .spec(reqSpec)
                         .body(newUser)
-                        .contentType(ContentType.JSON)
 
                         .when()
-                        .post("https://gorest.co.in/public/v2/users")
+                        .post()
 
                         .then()
                         .log().body()
@@ -110,10 +118,9 @@ public class _01_GoRestUsersTest {
     public void getUserById(){
 
         given()
-                .header("Authorization", "Bearer 6e2a70107d231adae49cbeb2d30685ac536fef76a7401004e39ac3f5a3b2088a")
-
+                .spec(reqSpec)
                 .when()
-                .get("https://gorest.co.in/public/v2/users/" +userId)
+                .get("/"+userId)
 
                 .then()
                 .statusCode(200)

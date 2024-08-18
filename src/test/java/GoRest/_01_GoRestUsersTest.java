@@ -25,7 +25,7 @@ public class _01_GoRestUsersTest {
 
         reqSpec = new RequestSpecBuilder()
 
-                .addHeader("Authorization", "Bearer 6e2a70107d231adae49cbeb2d30685ac536fef76a7401004e39ac3f5a3b2088a")
+                .addHeader("Authorization", "Bearer b1f7c7789f92ce78dc739afe1bdb192eb27b9c97b328ae98409e0b12639e4340")
                 .setContentType(ContentType.JSON)
                 .build();
     }
